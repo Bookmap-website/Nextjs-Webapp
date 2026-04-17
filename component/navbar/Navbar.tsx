@@ -2,17 +2,17 @@
 
 import { useRouter } from "next/navigation";
 import "./navbar.css";
+import Link from "next/link";
 
 export function Navbar() {
   const router = useRouter();
 
   return (
     <nav className="navbar">
-      <div className="logo">Bookmap</div>
+      <div><Link href="/" className="logo">Bookmap</Link></div>
 
       <div className="links">
-        <button onClick={() => router.push("/")} className="button-navbar">Home</button>
-        <button onClick={() => router.push("/bookmarks")} className="button-navbar">Bookmarks</button>
+        <button onClick={() => router.push("/Bookmarks")} className="button-navbar">Bookmarks</button>
         <button onClick={() => {
           // logout logic here
           localStorage.removeItem("token");

@@ -1,6 +1,7 @@
 import { useRouter } from "next/navigation";
-import { getBookmarks } from "../services/bookmark.service";
+import { getBookmarks, createBookmark } from "../services/bookmark.service";
 import { tokenStorage } from "../lib/token";
+import { Bookmark, BookmarkCreateRequest } from "@/app/(Pages)/Bookmarks/bookmark_int";
 
 export function useBookmark() {
   const router = useRouter();
@@ -16,5 +17,17 @@ export function useBookmark() {
     }
   };
 
-  return { handleGetBookmarks };
+  const handleAddBookmark = async (e: any, formData: BookmarkCreateRequest) => {
+    e.preventDefault();
+    try {
+      const token = tokenStorage.getToken();
+
+      const data = await createBookmark(token!, formData);
+      return data;
+    } catch (err) {
+      router.push("/Bookmarks");
+    }
+  };
+
+  return { handleGetBookmarks, handleAddBookmark };
 }

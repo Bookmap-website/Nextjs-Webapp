@@ -7,10 +7,10 @@ import React from "react";
 export default function RenderUsers({ users }: { users: User[] }) {
   return (
     <div>
-      {users.map((user) => (
-        <div key={user.id} style={{ flexDirection: "row" }}>
-          <p>{user.name}</p>
-          <p>{user.email}</p>
+      {users.map((item) => (
+        <div key={item.id} style={{ flexDirection: "row" }}>
+          <p>{item.name}</p>
+          <p>{item.email}</p>
         </div>
       ))}
     </div>

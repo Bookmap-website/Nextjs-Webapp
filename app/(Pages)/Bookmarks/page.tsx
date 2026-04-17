@@ -1,7 +1,7 @@
 "use client";
 
 import { useBookmark } from "@/hooks/useBookmark";
-import RenderBookmarks from "@/components/render/renderBookmark";
+import RenderBookmarks from "@/components/render_items/renderBookmark";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Bookmark } from "./bookmark_int";

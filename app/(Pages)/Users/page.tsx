@@ -1,6 +1,6 @@
 /* la logique de connexion au mock data de l'api jsonplaceholder des users */
 
-import RenderUsers from "@/components/render/renderUsers";
+import RenderUsers from "@/components/render_items/renderUsers";
 import Link from "next/dist/client/link";
 
 export default async function UsersPage() {

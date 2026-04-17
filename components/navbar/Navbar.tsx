@@ -1,15 +1,25 @@
-import Link from "next/link";
+"use client";
+
+import { useRouter } from "next/navigation";
 import "./navbar.css";
 
 export function Navbar() {
+  const router = useRouter();
+
   return (
     <nav className="navbar">
-      <div className="logo">MyApp</div>
+      <div className="logo">Bookmap</div>
 
       <div className="links">
-        <Link href="/">Home</Link>
-        <Link href="/bookmarks">Bookmarks</Link>
-        <Link href="/Login">Login</Link>
+        <button onClick={() => router.push("/")} className="button-navbar">Home</button>
+        <button onClick={() => router.push("/bookmarks")} className="button-navbar">Bookmarks</button>
+        <button onClick={() => {
+          // logout logic here
+          localStorage.removeItem("token");
+          router.push("/Login");
+        }} className="button-navbar">
+          Logout
+        </button>
       </div>
     </nav>
   );

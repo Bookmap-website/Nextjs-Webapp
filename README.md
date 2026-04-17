@@ -1,3 +1,17 @@
+
+
+// commands to run it
+npm i
+npm run dev
+
+
+
+
+
+
+
+<!-- stuff from the readme created by nextjs beforehand -->
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

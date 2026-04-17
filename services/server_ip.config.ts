@@ -1,0 +1,1 @@
+export const server_ip = "http://localhost:3000";

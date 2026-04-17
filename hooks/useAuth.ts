@@ -1,7 +1,6 @@
-import { login } from "@/services/auth.services";
+import { login, signup } from "@/services/auth.services";
 import { tokenStorage } from "@/lib/token";
 import { useRouter } from "next/navigation";
-import * as argon2 from "argon2";
 
 export function useAuth() {
   const router = useRouter();
@@ -10,8 +9,6 @@ export function useAuth() {
     e.preventDefault();
 
     try {
-      
-
       const data = await login(formData.email, formData.password);
 
       tokenStorage.setToken(data.access_token);
@@ -19,6 +16,22 @@ export function useAuth() {
       router.push("/");
     } catch (err) {
       alert("Login failed");
+      router.push("/Login");
+    }
+  };
+
+  const handleSignupSubmit = async (e: any, formData: any) => {
+    e.preventDefault();
+
+    try {
+      const data = await signup(formData.email, formData.password);
+
+      tokenStorage.setToken(data.access_token);
+
+      router.push("/");
+    } catch (err) {
+      alert("Signup failed");
+      router.push("/Register");
     }
   };
 
@@ -27,5 +40,5 @@ export function useAuth() {
     router.push("/Login");
   };
 
-  return { handleLoginSubmit, handleLogoutSubmit };
+  return { handleLoginSubmit, handleSignupSubmit, handleLogoutSubmit };
 }

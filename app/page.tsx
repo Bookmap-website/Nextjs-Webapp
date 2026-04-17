@@ -2,6 +2,7 @@
 
 import { useProfile } from "@/hooks/useProfile";
 import { useAuth } from "@/hooks/useAuth";
+import Link from "next/link";
 
 export default function Home() {
   const { user } = useProfile();
@@ -18,6 +19,12 @@ export default function Home() {
 
         <p>{user.email}</p>
         <p>{user.firstname}</p>
+      </div>
+
+      {/* // user boomark */}
+
+      <div>
+        <Link href="/Bookmarks">My bookmarks</Link>
       </div>
 
       <div>

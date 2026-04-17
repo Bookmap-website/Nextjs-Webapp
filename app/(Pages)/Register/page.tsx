@@ -5,8 +5,8 @@ import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import '../comps.css';
 
-export default function Login_page() {
-  const { handleLoginSubmit } = useAuth();
+export default function Register_page() {
+  const { handleSignupSubmit } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -15,8 +15,8 @@ export default function Login_page() {
 
   return (
     <>
-      <h1>Login</h1>
-      <form onSubmit={(e) => handleLoginSubmit(e, formData)}>
+      <h1>Register</h1>
+      <form onSubmit={(e) => handleSignupSubmit(e, formData)}>
         <div style={{ display: "flex", gap: "10px" }}>
           <h1>Email :</h1>
           <input
@@ -48,16 +48,16 @@ export default function Login_page() {
                   : "red",
             }}
           >
-            Login
+            Register
           </button>
         </div>
       </form>
       <br />
       <div style={{ flexDirection: "row" }}>
         <p>
-          Don't have an account ? -{" "}
-          <Link href="/Register" className="login-link">
-            register now
+          Already have an account ? -{" "}
+          <Link href="/Login" className="login-link">
+            login now
           </Link>
         </p>
       </div>

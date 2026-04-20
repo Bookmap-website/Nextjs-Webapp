@@ -1,7 +1,7 @@
 "use client";
 
 import { useBookmark } from "@/hooks/useBookmark";
-import RenderBookmarks from "@/component/render_items/renderBookmark";
+import RenderBookmarks from "./renderBookmark";
 import { useEffect, useState } from "react";
 import { Bookmark } from "./bookmark_int";
 
@@ -92,7 +92,7 @@ export default function Bookmarks_page() {
                     padding: "10px",
                   }}
                 >
-                  <label>Title</label>
+                  <label>Title *</label>
                   <input
                     type="text"
                     placeholder="..."
@@ -111,7 +111,7 @@ export default function Bookmarks_page() {
                 <div
                   style={{ flex: 1, display: "flex", flexDirection: "column", padding: "10px" }}
                 >
-                  <label>Website Link (url)</label>
+                  <label>Website Link (url) *</label>
                   <input
                     type="text"
                     placeholder="..."

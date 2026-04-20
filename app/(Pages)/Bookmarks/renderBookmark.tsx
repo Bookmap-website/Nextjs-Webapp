@@ -2,12 +2,24 @@
 
 import { Bookmark } from "@/app/(Pages)/Bookmarks/bookmark_int";
 import Link from "next/link";
+import { CSSProperties } from "react";
 
 export default function Render_bookmarks({
   bookmarks,
 }: {
   bookmarks: Bookmark[];
 }) {
+  const cardStyle: CSSProperties = {
+    border: "1px solid white",
+    borderRadius: "10px",
+    padding: "15px",
+    color: "white",
+    background: "#111",
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  };
+
   return (
     <div
       style={{
@@ -20,22 +32,15 @@ export default function Render_bookmarks({
       {bookmarks.map((item) => (
         <div
           key={item.id}
-          style={{
-            border: "1px solid white",
-            borderRadius: "10px",
-            padding: "15px",
-            color: "white",
-            background: "#111",
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-          }}
+          onClick={() => (window.location.href = `/Bookmarks/${item.id}`)}
+          style={{ cursor: "pointer", ...cardStyle }}
         >
           <h3>{item.title}</h3>
 
           <Link
             href={item.link}
             target="_blank"
+            onClick={(e) => e.stopPropagation()}
             style={{ color: "#4da6ff" }}
           >
             {item.link}

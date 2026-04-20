@@ -10,8 +10,8 @@ export default function BookmarksPage() {
       <h1>bookmark id from url</h1>
       <h2>{id}</h2>
 
-      <Link href="/" className="navbar-item">
-        Vers la page Home
+      <Link href="/Bookmarks" className="navbar-item">
+        Vers la page des bookmarks
       </Link>
     </>
   );

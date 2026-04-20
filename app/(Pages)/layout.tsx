@@ -1,4 +1,4 @@
-import { Navbar } from "../../component/navbar/Navbar";
+import { Navbar } from "../../public/component/navbar/Navbar";
 
 export default function PagesLayout({
   children,

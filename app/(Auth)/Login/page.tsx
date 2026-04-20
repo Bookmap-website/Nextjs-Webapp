@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import Link from "next/link";
-import '../comps.css';
+import "../comps.css";
+import RegisterPrompt from "@/public/component/LoginRegisterNavigation/LoginRegisterNavigation";
 
 export default function Login_page() {
   const { handleLoginSubmit } = useAuth();
@@ -53,14 +53,11 @@ export default function Login_page() {
         </div>
       </form>
       <br />
-      <div style={{ flexDirection: "row" }}>
-        <p>
-          Don't have an account ? -{" "}
-          <Link href="/Register" className="login-link">
-            register now
-          </Link>
-        </p>
-      </div>
+      <RegisterPrompt
+        href_file_path="/Register"
+        text_before_link="Don't have an account?"
+        text_after_link="Register now"
+      />
     </>
   );
 }

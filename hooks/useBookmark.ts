@@ -1,7 +1,17 @@
 import { useRouter } from "next/navigation";
-import { getBookmarks, createBookmark } from "../services/bookmark.service";
+import {
+  getBookmarks,
+  createBookmark,
+  getBookmarksById,
+  updateBookmark,
+  deleteBookmark,
+} from "../services/bookmark.service";
 import { tokenStorage } from "../lib/token";
-import { Bookmark, BookmarkCreateRequest } from "@/app/(Pages)/Bookmarks/bookmark_int";
+import {
+  Bookmark,
+  BookmarkCreateRequest,
+} from "@/app/(Pages)/Bookmarks/bookmark_int";
+import { EditBookmark_interface } from "@/app/(Pages)/Bookmarks/[id]/editBookmark_int";
 
 export function useBookmark() {
   const router = useRouter();
@@ -12,8 +22,17 @@ export function useBookmark() {
       const data = await getBookmarks(token!);
       return data;
     } catch (err) {
-      tokenStorage.removeToken();
-      router.push("/Login");
+      router.push("/Bookmarks");
+    }
+  };
+
+  const handleGetBookmarkById = async (id: string) => {
+    try {
+      const token = tokenStorage.getToken();
+      const data = await getBookmarksById(token!, id);
+      return data;
+    } catch (err) {
+      router.push("/Bookmarks");
     }
   };
 
@@ -29,5 +48,25 @@ export function useBookmark() {
     }
   };
 
-  return { handleGetBookmarks, handleAddBookmark };
+  const handleUpdateBookmark = async (id: string, formData: EditBookmark_interface) => {
+    try {
+      const token = tokenStorage.getToken();
+      const data = await updateBookmark(token!, id, formData);
+      return data;
+    } catch (err) {
+      router.push("/Bookmarks");
+    }
+  };
+
+  const handleDeleteBookmark = async (id: string) => {
+    try {
+      const token = tokenStorage.getToken();
+      const data = await deleteBookmark(token!, id);
+      return data;
+    } catch (err) {
+      router.push("/Bookmarks");
+    }
+  };
+
+  return { handleGetBookmarks, handleGetBookmarkById, handleAddBookmark, handleUpdateBookmark, handleDeleteBookmark };
 }

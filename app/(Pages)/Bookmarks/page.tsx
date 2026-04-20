@@ -4,6 +4,8 @@ import { useBookmark } from "@/hooks/useBookmark";
 import RenderBookmarks from "./renderBookmark";
 import { useEffect, useState } from "react";
 import { Bookmark } from "./bookmark_int";
+import SearchBar from "@/public/component/Searchbar/searchbar";
+import { exportBookmarksToCSV } from "@/utilities/CSV/bookmark_csv_export_logic";
 
 export default function Bookmarks_page() {
   const { handleGetBookmarks, handleAddBookmark } = useBookmark();
@@ -15,6 +17,7 @@ export default function Bookmarks_page() {
     link: "",
     description: "",
   });
+  const [searchBar, setSearchBar] = useState("");
 
   // when the page mounts, get the bookmarks
   useEffect(() => {
@@ -54,8 +57,32 @@ export default function Bookmarks_page() {
   const isFormValid =
     formBookmarkData.title.trim() !== "" && formBookmarkData.link.trim() !== "";
 
+  // filters the bookmarks based on the search bar and filters
+  const [filters, setFilters] = useState({
+    title: true,
+    description: true,
+    link: true,
+  });
+  const filteredBookmarks = bookmarks_list.filter((bookmark) => {
+    if (!filters.title && !filters.description && !filters.link) {
+      return bookmarks_list;
+    }
+    const query = searchBar.toLowerCase();
+
+    const title = bookmark.title.toLowerCase();
+    const description = bookmark.description?.toLowerCase() || "";
+    const link = bookmark.link.toLowerCase();
+
+    return (
+      (filters.title && title.includes(query)) ||
+      (filters.description && description.includes(query)) ||
+      (filters.link && link.includes(query))
+    );
+  });
+
   return (
     <>
+      <h1 style={{ paddingTop: "25px" }}>My Bookmarks :</h1>
       <div
         style={{
           border: "1px solid white",
@@ -78,6 +105,7 @@ export default function Bookmarks_page() {
             {showForm ? "Cancel" : "Add Bookmark"}
           </button>
         </div>
+
         {showForm && (
           <div style={{ marginTop: "20px", alignContent: "center" }}>
             <form onSubmit={(e) => onCreationBookmarkFormSubmit(e)}>
@@ -109,7 +137,12 @@ export default function Bookmarks_page() {
 
                 {/* Link */}
                 <div
-                  style={{ flex: 1, display: "flex", flexDirection: "column", padding: "10px" }}
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: "10px",
+                  }}
                 >
                   <label>Website Link (url) *</label>
                   <input
@@ -177,8 +210,32 @@ export default function Bookmarks_page() {
           </div>
         )}
       </div>
-      <h1 style={{ paddingTop: "25px" }}>My Bookmarks : </h1>
-      <RenderBookmarks bookmarks={bookmarks_list} />
+
+      <SearchBar
+        value={searchBar}
+        onChange={setSearchBar}
+        filters={filters}
+        onFilterChange={setFilters}
+      />
+
+      <div style={{ width: "25%" }}>
+        <button
+          onClick={() => exportBookmarksToCSV(filteredBookmarks)}
+          style={{
+            marginTop: "10px",
+            padding: "8px",
+            borderRadius: "5px",
+            border: "1px solid green",
+            background: "#111",
+            color: "green",
+            cursor: "pointer",
+          }}
+        >
+          Export CSV
+        </button>
+      </div>
+
+      <RenderBookmarks bookmarks={filteredBookmarks} />
     </>
   );
 }

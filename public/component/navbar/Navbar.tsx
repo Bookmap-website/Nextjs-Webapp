@@ -13,6 +13,7 @@ export function Navbar() {
 
       <div className="links">
         <button onClick={() => router.push("/Bookmarks")} className="button-navbar">Bookmarks</button>
+        <button onClick={() => router.push("/Profile")} className="button-navbar">Settings</button>
         <button onClick={() => {
           // logout logic here
           localStorage.removeItem("token");

@@ -1,0 +1,9 @@
+{
+  "Profile": {
+    "title": "Profile",
+    "theme": "Theme",
+    "language": "Language",
+    "light": "Light",
+    "dark": "Dark"
+  }
+}

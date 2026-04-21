@@ -101,3 +101,19 @@ export async function deleteBookmark(token: string, id: string) {
 
   return res.json();
 }
+
+export async function getNbrBookmarks(token: string) {
+  const res = await fetch(server_ip + "/bookmark/nbrBookmarks", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Getting bookmark count in service failed");
+  }
+
+  return res.json();
+}

@@ -5,6 +5,7 @@ import {
   getBookmarksById,
   updateBookmark,
   deleteBookmark,
+  getNbrBookmarks,
 } from "../services/bookmark.service";
 import { tokenStorage } from "../lib/token";
 import {
@@ -48,7 +49,10 @@ export function useBookmark() {
     }
   };
 
-  const handleUpdateBookmark = async (id: string, formData: EditBookmark_interface) => {
+  const handleUpdateBookmark = async (
+    id: string,
+    formData: EditBookmark_interface,
+  ) => {
     try {
       const token = tokenStorage.getToken();
       const data = await updateBookmark(token!, id, formData);
@@ -68,5 +72,23 @@ export function useBookmark() {
     }
   };
 
-  return { handleGetBookmarks, handleGetBookmarkById, handleAddBookmark, handleUpdateBookmark, handleDeleteBookmark };
+  const handleGetNbrBookmarks = async () => {
+    try {
+      const token = tokenStorage.getToken();
+      const data = await getNbrBookmarks(token!);
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.error("Error fetching number of bookmarks:", err);
+    }
+  };
+
+  return {
+    handleGetBookmarks,
+    handleGetBookmarkById,
+    handleAddBookmark,
+    handleUpdateBookmark,
+    handleDeleteBookmark,
+    handleGetNbrBookmarks,
+  };
 }

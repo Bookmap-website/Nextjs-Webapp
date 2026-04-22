@@ -37,7 +37,7 @@ export function useBookmark() {
     }
   };
 
-  const handleAddBookmark = async (e: any, formData: BookmarkCreateRequest) => {
+  const handleAddBookmark = async (e: React.SyntheticEvent, formData: BookmarkCreateRequest) => {
     e.preventDefault();
     try {
       const token = tokenStorage.getToken();

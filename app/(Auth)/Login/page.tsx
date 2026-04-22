@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/Auth/useAuth";
 import "../comps.css";
 import RegisterPrompt from "@/public/component/LoginRegisterNavigation/LoginRegisterNavigation";
 
@@ -43,7 +43,7 @@ export default function Login_page() {
             type="submit"
             style={{
               color:
-                formData.email !== "" && formData.password !== ""
+                formData.email !== "" && formData.password !== "" && formData.password.length >= 6 
                   ? "green"
                   : "red",
             }}

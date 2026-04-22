@@ -62,10 +62,6 @@ export default function Home() {
             <p className="text-sm text-blue-600">Total Bookmarks</p>
 
             <p className="text-3xl font-bold text-blue-700">{nbrBookmarks}</p>
-
-            <p className="text-sm text-blue-500 mt-1">
-              Saved items in your collection
-            </p>
           </div>
         </div>
       </div>

@@ -8,10 +8,7 @@ import {
   getNbrBookmarks,
 } from "../services/bookmark.service";
 import { tokenStorage } from "../lib/token";
-import {
-  Bookmark,
-  BookmarkCreateRequest,
-} from "@/app/(Pages)/Bookmarks/bookmark_int";
+import { BookmarkCreateRequest } from "@/app/(Pages)/Bookmarks/bookmark_int";
 import { EditBookmark_interface } from "@/app/(Pages)/Bookmarks/[id]/editBookmark_int";
 
 export function useBookmark() {
@@ -37,7 +34,10 @@ export function useBookmark() {
     }
   };
 
-  const handleAddBookmark = async (e: React.SyntheticEvent, formData: BookmarkCreateRequest) => {
+  const handleAddBookmark = async (
+    e: React.SyntheticEvent,
+    formData: BookmarkCreateRequest,
+  ) => {
     e.preventDefault();
     try {
       const token = tokenStorage.getToken();

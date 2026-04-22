@@ -14,40 +14,50 @@ import BookmarkActions from "@/public/component/bookmark/BookmarkActions";
 import BookmarkSearch from "@/public/component/bookmark/BookmarkSearchBar";
 
 export default function Bookmarks_page() {
-  const { handleGetBookmarks, handleAddBookmark, handleDeleteBookmark } =
-    useBookmark();
+  const { handleGetBookmarks, handleAddBookmark, handleDeleteBookmark } = useBookmark();
 
   const [bookmarks_list, setBookmarks] = useState<Bookmark[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
+  // dynamic form data
   const [formBookmarkData, setFormBookmarkData] = useState({
     title: "",
     link: "",
     description: "",
   });
 
+  // search bar
   const [searchBar, setSearchBar] = useState("");
 
+  // filters for the search bar
   const [filters, setFilters] = useState({
     title: true,
     description: true,
     link: true,
   });
 
+  // get all the bookmarks on page load
   useEffect(() => {
     getBookmarks();
   }, []);
 
+  // get all the bookmarks from the hook comp
   const getBookmarks = async () => {
-    const data = await handleGetBookmarks();
-    if (data) setBookmarks(data);
+    try {
+      const data = await handleGetBookmarks();
+
+      setBookmarks(data);
+    } catch (err) {
+      console.error("Error fetching number of bookmarks:", err);
+    }
   };
 
-  const onCreationBookmarkFormSubmit = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
+  // function to create a new bookmark with the form's submitted data
+  const onCreationBookmarkFormSubmit = async (event: React.SyntheticEvent) => {
+    event.preventDefault();
 
-    await handleAddBookmark(e, formBookmarkData);
+    await handleAddBookmark(event, formBookmarkData);
 
     setFormBookmarkData({
       title: "",
@@ -58,6 +68,7 @@ export default function Bookmarks_page() {
     await getBookmarks();
   };
 
+  // filters the bookmarks in the list to match the search bar + filters
   const filteredBookmarks = bookmarks_list.filter((bookmark) => {
     const query = searchBar.toLowerCase();
 
@@ -69,9 +80,12 @@ export default function Bookmarks_page() {
     );
   });
 
+  // drag and drop the bookmarks to the trash zone component to delete
+  // librairies i used : npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
   const handleDragEnd = async (event: any) => {
     const { active, over } = event;
 
+    // if the item is dropped on the trash zone
     if (over?.id === "trash") {
       const id = active.id;
 
@@ -89,6 +103,7 @@ export default function Bookmarks_page() {
   };
 
   return (
+    // comes from the librairies : @dnd-kit/core, provides a context to drag and drop the items from the list of bookmarks
     <DndContext
       autoScroll={false}
       onDragStart={() => setIsDragging(true)}

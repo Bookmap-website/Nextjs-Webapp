@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-:root {
-  --background: black;
-  --foreground: white;
-}
 
 /* @theme inline {
   --color-background: var(--background);
@@ -11,13 +7,6 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 } */
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: black;
-    --foreground: white;
-  }
-}
 
 body {
   background: var(--background);
@@ -27,10 +16,4 @@ body {
 
 .header-principal {
   color: green;
-}
-
-.navbar-item {
-  color: blue;
-  margin-right: 20px;
-  font-size: 20px;
 }

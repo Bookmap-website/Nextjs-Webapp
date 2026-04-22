@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import { useAuth } from "@/hooks/Auth/useAuth";
-import "../comps.css";
-import RegisterPrompt from "@/public/component/LoginRegisterNavigation/LoginRegisterNavigation";
+import RegisterNavigation from "@/public/component/LoginRegisterNavigation/LoginRegisterNavigation";
+
+import Input from "@/public/component/Input";
+import LoginButton from "@/public/component/LoginRegisterNavigation/button";
+import FormTitle from "@/public/component/LoginRegisterNavigation/title";
 
 export default function Login_page() {
   const { handleLoginSubmit } = useAuth();
@@ -13,51 +16,45 @@ export default function Login_page() {
     password: "",
   });
 
+  const isValid =
+    formData.email !== "" &&
+    formData.password !== "" &&
+    formData.password.length >= 6;
+
   return (
-    <>
-      <h1>Login</h1>
-      <form onSubmit={(e) => handleLoginSubmit(e, formData)}>
-        <div style={{ display: "flex", gap: "10px" }}>
-          <h1>Email :</h1>
-          <input
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
+        <FormTitle text="Login - Bookmap" />
+
+        <form
+          onSubmit={(e) => handleLoginSubmit(e, formData)}
+          className="space-y-5"
+        >
+          <Input
+            label="Email"
             type="email"
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
+            value={formData.email}
+            onChange={(value) => setFormData({ ...formData, email: value })}
           />
-        </div>
 
-        <div style={{ display: "flex", gap: "10px" }}>
-          <h1>Password :</h1>
-          <input
+          <Input
+            label="Password"
             type="password"
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
+            value={formData.password}
+            onChange={(value) => setFormData({ ...formData, password: value })}
+          />
+
+          <LoginButton label="Login" type="submit" isValid={isValid} />
+        </form>
+
+        <div className="mt-6">
+          <RegisterNavigation
+            href_file_path="/Register"
+            text_before_link="Don't have an account?"
+            text_after_link="Register now"
           />
         </div>
-
-        {/* if all fields arent filled, then the color is red, else it green */}
-        <div>
-          <button
-            type="submit"
-            style={{
-              color:
-                formData.email !== "" && formData.password !== "" && formData.password.length >= 6 
-                  ? "green"
-                  : "red",
-            }}
-          >
-            Login
-          </button>
-        </div>
-      </form>
-      <br />
-      <RegisterPrompt
-        href_file_path="/Register"
-        text_before_link="Don't have an account?"
-        text_after_link="Register now"
-      />
-    </>
+      </div>
+    </div>
   );
 }

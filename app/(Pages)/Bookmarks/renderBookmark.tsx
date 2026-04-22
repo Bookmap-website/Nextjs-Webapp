@@ -1,53 +1,17 @@
 "use client";
 
-import { Bookmark } from "@/app/(Pages)/Bookmarks/bookmark_int";
-import Link from "next/link";
-import { CSSProperties } from "react";
+import { Bookmark } from "./bookmark_int";
+import DraggableBookmark from "@/public/component/DragAndDrop/dragableBookmark";
 
-export default function Render_bookmarks({
+export default function RenderBookmarks({
   bookmarks,
 }: {
   bookmarks: Bookmark[];
 }) {
-  const cardStyle: CSSProperties = {
-    border: "1px solid white",
-    borderRadius: "10px",
-    padding: "15px",
-    color: "white",
-    background: "#111",
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-  };
-
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)",
-        gap: "20px",
-        marginTop: "20px",
-      }}
-    >
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-6">
       {bookmarks.map((item) => (
-        <div
-          key={item.id}
-          onClick={() => (window.location.href = `/Bookmarks/${item.id}`)}
-          style={{ cursor: "pointer", ...cardStyle }}
-        >
-          <h3>{item.title}</h3>
-
-          <Link
-            href={item.link}
-            target="_blank"
-            onClick={(e) => e.stopPropagation()}
-            style={{ color: "#4da6ff" }}
-          >
-            {item.link}
-          </Link>
-
-          <p>{item.description}</p>
-        </div>
+        <DraggableBookmark key={item.id} bookmark={item} />
       ))}
     </div>
   );

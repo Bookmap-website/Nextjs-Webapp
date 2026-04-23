@@ -2,6 +2,7 @@
 
 import { useDraggable } from "@dnd-kit/core";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Bookmark } from "@/app/(Pages)/Bookmarks/bookmark_int";
 
 export default function DraggableBookmark({
@@ -9,40 +10,62 @@ export default function DraggableBookmark({
 }: {
   bookmark: Bookmark;
 }) {
-  // drag and drop
-  const { attributes, listeners, setNodeRef, transform, isDragging } =
-    useDraggable({
-      id: bookmark.id,
-    });
+  const router = useRouter();
 
-  // defines the drag and drop component
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: bookmark.id,
+  });
+
   return (
     <div
       ref={setNodeRef}
-      {...listeners} // listeners for the taking the item and dropping it on the trash zone
       className="
         p-4 rounded-xl border bg-gray-900 text-white
-        flex flex-col gap-2 cursor-grab
-        hover:scale-[1.02] transition
+        flex flex-col gap-3
       "
-      // tracks the position of the element to follow the cursor and make it look like it's being dragged
       style={{
         transform: transform
           ? `translate(${transform.x}px, ${transform.y}px)`
           : undefined,
       }}
     >
-      <h3 className="font-semibold">{bookmark.title}</h3>
+      {/* HEADER avec drag handle */}
+      <div className="flex justify-between items-center">
+        <h3 className="font-semibold">{bookmark.title}</h3>
+
+        <div
+          {...listeners}
+          {...attributes}
+          className="cursor-grab text-gray-400 hover:text-white"
+        >
+          ⋮⋮
+        </div>
+      </div>
 
       <Link
         href={bookmark.link}
         target="_blank"
+        onClick={(e) => e.stopPropagation()}
         className="text-blue-400 break-all"
       >
         {bookmark.link}
       </Link>
 
-      <p className="text-sm text-gray-300">{bookmark.description}</p>
+      <p className="text-sm text-gray-300 line-clamp-2">
+        {bookmark.description}
+      </p>
+
+      {/* BUTTON WORKS NOW */}
+      <button
+        onClick={() => router.push("/Bookmarks/" + bookmark.id)}
+        className="
+          mt-2 px-3 py-1.5 text-sm font-medium
+          bg-blue-500 hover:bg-blue-600
+          rounded-lg transition
+        "
+      >
+        View details
+      </button>
     </div>
   );
 }

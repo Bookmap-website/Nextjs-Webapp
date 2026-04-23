@@ -68,15 +68,26 @@ export async function createBookmark(
 export async function updateBookmark(
   token: string,
   id: string,
-  dto: EditBookmark_interface,
+  formData: EditBookmark_interface,
 ) {
+  const cleanedData = Object.fromEntries(
+    Object.entries(formData).filter(([key, value]) => {
+      // remove empty title or link (because they are mandatory) without removing description
+      if ((key === "title" || key === "link") && value === "") {
+        return false;
+      }
+
+      return true;
+    }),
+  );
+
   const res = await fetch(server_ip + "/bookmark/editBookmarkById/" + id, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + token,
     },
-    body: JSON.stringify(dto),
+    body: JSON.stringify(cleanedData),
   });
 
   if (!res.ok) {

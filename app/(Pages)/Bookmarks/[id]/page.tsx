@@ -22,50 +22,48 @@ export default function BookmarksPage() {
     link: "",
   });
 
-  // LOAD DATA
   useEffect(() => {
     if (!id) return;
 
-    const id_string = id as string;
-    handleGetBookmarkById(id_string)
-      .then((data) => {
+    // fetch the bookmark in question using the hook comp on load
+    const fetchBookmark = async () => {
+      try {
+        const data = await handleGetBookmarkById(id as string);
+
         if (!data) {
           setBookmark(null);
           return;
         }
 
         setBookmark(data);
+
         setForm({
           title: data.title ?? "",
           description: data.description ?? "",
           link: data.link ?? "",
         });
-      })
-      .catch((err) => {
-        console.error(err);
+      } catch (err) {
         setBookmark(null);
-      });
+      }
+    };
+
+    fetchBookmark();
   }, [id]);
 
-  // INPUT CHANGE
+  // changes the form data from un-editable to editable
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // TOGGLE EDIT MODE
-  const activateEditMode = () => {
-    setIsEditing((prev) => !prev);
-  };
-
-  // SAVE UPDATE
+  // saves the updated bookmark, communicates with the server then update the state of the bookmark
   const saveUpdate = async () => {
     if (!id) return;
 
     try {
-      const id_string = id as string;
-      const updated = await handleUpdateBookmark(id_string, form);
+      const updated = await handleUpdateBookmark(id as string, form);
       setBookmark(updated);
       setIsEditing(false);
     } catch (err) {
@@ -74,19 +72,14 @@ export default function BookmarksPage() {
     }
   };
 
-  // DELETE
+  // deletes the bookmark with an alert to confirm the choice
   const deleteBookmark = async () => {
     if (!id) return;
 
-    const confirmDelete = confirm(
-      "Are you sure you want to delete this bookmark?",
-    );
-
-    if (!confirmDelete) return;
+    if (!confirm("Are you sure you want to delete this bookmark?")) return;
 
     try {
-      const id_string = id as string;
-      await handleDeleteBookmark(id_string);
+      await handleDeleteBookmark(id as string);
       router.push("/Bookmarks");
     } catch (err) {
       console.error(err);
@@ -94,112 +87,130 @@ export default function BookmarksPage() {
   };
 
   return (
-    <div style={{ padding: "20px", color: "white" }}>
-      {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-        <Link href="/Bookmarks" className="navbar-item">
-          ← Back
+    <div className="min-h-screen bg-gray-100 px-6 py-10">
+      {/* HEADER */}
+      <div className="flex items-center gap-4 pb-5">
+        <Link
+          href="/Bookmarks"
+          className="text-sm text-gray-500 hover:text-gray-800 transition"
+        >
+          Back
         </Link>
-        <h1>Bookmark details</h1>
+
+        <h1 className="text-2xl font-bold text-gray-800">Bookmark details</h1>
       </div>
 
-      {/* Content */}
-      {!bookmark ? (
-        <p style={{ marginTop: "20px", opacity: 0.7 }}>Bookmark not found</p>
-      ) : (
-        <div
-          style={{
-            marginTop: "20px",
-            padding: "20px",
-            border: "1px solid white",
-            borderRadius: "10px",
-            background: "#111",
-            display: "flex",
-            flexDirection: "column",
-            gap: "15px",
-            maxWidth: "50%",
-          }}
-        >
-          <div style={{ display: "flex", gap: "10px", width: "100%" }}>
-            {isEditing ? (
-              <>
-                <button onClick={saveUpdate} style={{ width: "25%" }}>
-                  Save
-                </button>
+      {/* CONTENT */}
+      <div className="bg-white shadow-lg rounded-2xl p-6">
+        {!bookmark ? (
+          <p className="text-gray-500">Bookmark not found</p>
+        ) : (
+          <div className="flex flex-col gap-6">
+            {/* ACTIONS */}
+            <div className="flex gap-3">
+              {isEditing ? (
+                <>
+                  <button
+                    onClick={saveUpdate}
+                    className="flex-1 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+                  >
+                    Save
+                  </button>
 
-                <button
-                  onClick={() => setIsEditing(false)}
-                  style={{ width: "25%" }}
+                  <button
+                    onClick={() => setIsEditing(false)}
+                    className="flex-1 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    onClick={deleteBookmark}
+                    className="flex-1 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                  >
+                    Delete
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="flex-1 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    onClick={deleteBookmark}
+                    className="flex-1 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* TITLE */}
+            <div>
+              <label className="text-sm text-gray-500">Title *</label>
+
+              {isEditing ? (
+                <input
+                  name="title"
+                  value={form.title}
+                  onChange={handleChange}
+                  className="w-full mt-1 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+              ) : (
+                <p className="text-lg font-semibold text-gray-800 mt-1">
+                  {bookmark.title}
+                </p>
+              )}
+            </div>
+
+            {/* LINK */}
+            <div>
+              <label className="text-sm text-gray-500">Link *</label>
+
+              {isEditing ? (
+                <input
+                  name="link"
+                  value={form.link}
+                  onChange={handleChange}
+                  className="w-full mt-1 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+              ) : (
+                <a
+                  href={bookmark.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:underline break-all mt-1 block"
                 >
-                  Cancel
-                </button>
+                  {bookmark.link}
+                </a>
+              )}
+            </div>
 
-                <button
-                  onClick={deleteBookmark}
-                  style={{ width: "50%", color: "red" }}
-                >
-                  Delete
-                </button>
-              </>
-            ) : (
-              <>
-                <button onClick={activateEditMode} style={{ width: "50%" }}>
-                  Edit
-                </button>
+            {/* DESCRIPTION */}
+            <div>
+              <label className="text-sm text-gray-500">Description</label>
 
-                <button
-                  onClick={deleteBookmark}
-                  style={{ width: "50%", color: "red" }}
-                >
-                  Delete
-                </button>
-              </>
-            )}
+              {isEditing ? (
+                <textarea
+                  name="description"
+                  value={form.description}
+                  onChange={handleChange}
+                  className="w-full mt-1 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+              ) : (
+                <p className="text-gray-700 mt-1">
+                  {bookmark.description || "No description"}
+                </p>
+              )}
+            </div>
           </div>
-          {/* TITLE */}
-          <div>
-            <h3>Title</h3>
-            {isEditing ? (
-              <input name="title" value={form.title} onChange={handleChange} />
-            ) : (
-              <p>{bookmark.title}</p>
-            )}
-          </div>
-
-          {/* LINK */}
-          <div>
-            <h3>Link</h3>
-            {isEditing ? (
-              <input name="link" value={form.link} onChange={handleChange} />
-            ) : (
-              <a
-                href={bookmark.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "#4da6ff" }}
-              >
-                {bookmark.link}
-              </a>
-            )}
-          </div>
-
-          {/* DESCRIPTION */}
-          <div>
-            <h3>Description</h3>
-            {isEditing ? (
-              <textarea
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-              />
-            ) : (
-              <p>{bookmark.description}</p>
-            )}
-          </div>
-
-          {/* ACTIONS */}
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

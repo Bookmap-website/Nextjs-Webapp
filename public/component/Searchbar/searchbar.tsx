@@ -49,25 +49,22 @@ export default function SearchBar({
           onChange={(e) => onChange(e.target.value)}
           style={{
             width: "100%",
-            padding: "8px 30px 8px 8px", // espace pour le X
+            padding: "8px", // espace pour le X
             borderRadius: "5px",
-            border: "1px solid white",
-            background: "#111",
-            color: "white",
+            border: "1px solid black",
+            color: "black",
           }}
         />
 
         {value && (
           <button
-            onClick={() =>  onChange("")}
+            onClick={() => onChange("")}
             style={{
               position: "absolute",
               right: "8px",
-              top: "50%",
-              transform: "translateY(-50%)",
+              alignSelf: "center",
               background: "transparent",
-              border: "none",
-              color: "white",
+              color: "red",
               cursor: "pointer",
               fontSize: "16px",
             }}

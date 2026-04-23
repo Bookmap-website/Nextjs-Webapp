@@ -69,16 +69,18 @@ export default function Bookmarks_page() {
   };
 
   // filters the bookmarks in the list to match the search bar + filters
-  const filteredBookmarks = bookmarks_list.filter((bookmark) => {
-    const query = searchBar.toLowerCase();
+  const filteredBookmarks = Array.isArray(bookmarks_list)
+  ? bookmarks_list.filter((bookmark) => {
+      const query = searchBar.toLowerCase();
 
-    return (
-      (filters.title && bookmark.title.toLowerCase().includes(query)) ||
-      (filters.description &&
-        (bookmark.description || "").toLowerCase().includes(query)) ||
-      (filters.link && bookmark.link.toLowerCase().includes(query))
-    );
-  });
+      return (
+        (filters.title && bookmark.title.toLowerCase().includes(query)) ||
+        (filters.description &&
+          (bookmark.description || "").toLowerCase().includes(query)) ||
+        (filters.link && bookmark.link.toLowerCase().includes(query))
+      );
+    })
+  : [];
 
   // drag and drop the bookmarks to the trash zone component to delete
   // librairies i used : npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities

@@ -1,5 +1,3 @@
-
-
 import "./globals.css";
 import { ThemeProvider } from "@/context/themeContext";
 

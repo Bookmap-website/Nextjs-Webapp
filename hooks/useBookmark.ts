@@ -17,6 +17,12 @@ export function useBookmark() {
   const handleGetBookmarks = async () => {
     try {
       const token = tokenStorage.getToken();
+
+      if (!token) {
+        router.push("/Login");
+        return;
+      }
+
       const data = await getBookmarks(token!);
       return data;
     } catch (err) {
@@ -27,6 +33,12 @@ export function useBookmark() {
   const handleGetBookmarkById = async (id: string) => {
     try {
       const token = tokenStorage.getToken();
+
+      if (!token) {
+        router.push("/Login");
+        return;
+      }
+
       const data = await getBookmarksById(token!, id);
       return data;
     } catch (err) {
@@ -42,6 +54,11 @@ export function useBookmark() {
     try {
       const token = tokenStorage.getToken();
 
+      if (!token) {
+        router.push("/Login");
+        return;
+      }
+
       const data = await createBookmark(token!, formData);
       return data;
     } catch (err) {
@@ -55,6 +72,12 @@ export function useBookmark() {
   ) => {
     try {
       const token = tokenStorage.getToken();
+
+      if (!token) {
+        router.push("/Login");
+        return;
+      }
+
       const data = await updateBookmark(token!, id, formData);
       return data;
     } catch (err) {
@@ -65,6 +88,10 @@ export function useBookmark() {
   const handleDeleteBookmark = async (id: string) => {
     try {
       const token = tokenStorage.getToken();
+      if (!token) {
+        router.push("/Login");
+        return;
+      }
       const data = await deleteBookmark(token!, id);
       return data;
     } catch (err) {
@@ -75,6 +102,10 @@ export function useBookmark() {
   const handleGetNbrBookmarks = async () => {
     try {
       const token = tokenStorage.getToken();
+      if (!token) {
+        router.push("/Login");
+        return;
+      }
       const data = await getNbrBookmarks(token!);
       console.log(data);
       return data;

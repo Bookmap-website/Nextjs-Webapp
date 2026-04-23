@@ -15,3 +15,18 @@ export async function getMe(token: string) {
 
   return res.json();
 }
+
+// return a bool as : { "isAdmin": true }
+export async function getWhoami(token: string) {
+  const res = await fetch(server_ip + "/user/whoami", {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Unauthorized");
+  }
+
+  return res.json();
+}

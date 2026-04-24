@@ -4,6 +4,7 @@
     "theme": "Thème",
     "language": "Langue",
     "light": "Clair",
-    "dark": "Sombre"
+    "dark": "Sombre",
+    "description": "Vos Paramètres"
   }
 }

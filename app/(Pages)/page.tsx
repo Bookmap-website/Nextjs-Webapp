@@ -2,6 +2,7 @@
 
 import { useBookmark } from "@/hooks/useBookmark";
 import { useProfile } from "@/hooks/useProfile";
+import BookmarksHeader from "@/public/component/bookmark/BookmarksHeader";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -25,12 +26,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100 px-6 py-10">
-      {/* HEADER (same style as bookmarks page) */}
-      <div className=" mx-auto mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
-        <p className="text-gray-500">Overview of your account and activity</p>
-      </div>
-
+      <BookmarksHeader item_header="Dashboard" item_description="Overview of your account and activity" />
       {/* MAIN CARD */}
       <div className=" mx-auto bg-white shadow-lg rounded-2xl p-6">
         {/* WELCOME BLOCK */}

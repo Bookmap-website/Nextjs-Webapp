@@ -1,42 +1,37 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 import en from "@/messages/en.json";
 import fr from "@/messages/fr.json";
 
 import type { Theme, Lang } from "./profile_type";
+import BookmarksHeader from "@/public/component/bookmark/BookmarksHeader";
 
 export default function Profile_page() {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [language, setLanguage] = useState<Lang>("en");
+  // ✅ initialize directly from localStorage (no flicker)
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window === "undefined") return "light";
+    return (localStorage.getItem("theme") as Theme) || "light";
+  });
+
+  const [language, setLanguage] = useState<Lang>(() => {
+    if (typeof window === "undefined") return "en";
+    return (localStorage.getItem("language") as Lang) || "en";
+  });
 
   const messages: Record<Lang, typeof en> = {
     en,
     fr,
   };
 
-  // Load saved settings (NO JSON.parse needed)
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
-    const savedLang = localStorage.getItem("language") as Lang | null;
-
-    if (savedTheme === "light" || savedTheme === "dark") {
-      setTheme(savedTheme);
-    }
-
-    if (savedLang === "en" || savedLang === "fr") {
-      setLanguage(savedLang);
-    }
-  }, []);
-
-  // Apply + persist theme
+  // persist theme + apply dark mode
   useEffect(() => {
     localStorage.setItem("theme", theme);
     document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
-  // Persist language
+  // persist language
   useEffect(() => {
     localStorage.setItem("language", language);
   }, [language]);
@@ -49,7 +44,7 @@ export default function Profile_page() {
         theme === "dark" ? "bg-black text-white" : "bg-white text-black"
       }`}
     >
-      <h1 className="text-2xl font-bold mb-6">{t.Profile.title}</h1>
+      <BookmarksHeader item_header={t.Profile.title} item_description={t.Profile.description} />
 
       <h2 className="font-semibold mb-2">{t.Profile.theme}</h2>
 

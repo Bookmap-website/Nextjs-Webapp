@@ -14,7 +14,8 @@ import BookmarkActions from "@/public/component/bookmark/BookmarkActions";
 import BookmarkSearch from "@/public/component/bookmark/BookmarkSearchBar";
 
 export default function Bookmarks_page() {
-  const { handleGetBookmarks, handleAddBookmark, handleDeleteBookmark } = useBookmark();
+  const { handleGetBookmarks, handleAddBookmark, handleDeleteBookmark } =
+    useBookmark();
 
   const [bookmarks_list, setBookmarks] = useState<Bookmark[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -70,17 +71,17 @@ export default function Bookmarks_page() {
 
   // filters the bookmarks in the list to match the search bar + filters
   const filteredBookmarks = Array.isArray(bookmarks_list)
-  ? bookmarks_list.filter((bookmark) => {
-      const query = searchBar.toLowerCase();
+    ? bookmarks_list.filter((bookmark) => {
+        const query = searchBar.toLowerCase();
 
-      return (
-        (filters.title && bookmark.title.toLowerCase().includes(query)) ||
-        (filters.description &&
-          (bookmark.description || "").toLowerCase().includes(query)) ||
-        (filters.link && bookmark.link.toLowerCase().includes(query))
-      );
-    })
-  : [];
+        return (
+          (filters.title && bookmark.title.toLowerCase().includes(query)) ||
+          (filters.description &&
+            (bookmark.description || "").toLowerCase().includes(query)) ||
+          (filters.link && bookmark.link.toLowerCase().includes(query))
+        );
+      })
+    : [];
 
   // drag and drop the bookmarks to the trash zone component to delete
   // librairies i used : npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
@@ -112,7 +113,10 @@ export default function Bookmarks_page() {
       onDragEnd={handleDragEnd}
     >
       <div className="min-h-screen bg-gray-100 px-6 py-10">
-        <BookmarksHeader />
+        <BookmarksHeader
+          item_header="My Bookmarks"
+          item_description="Manage and organize your saved links"
+        />
 
         <BookmarkActions
           showForm={showForm}

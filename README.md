@@ -2,6 +2,9 @@
 npm i
 npm run dev
 
+// to run the tests (with jester)
+npm run test
+
 // for the curious :
 // the drag and drop functionnality was made with these libraries :
 npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities

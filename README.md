@@ -1,9 +1,10 @@
-
-
 // commands to run it
 npm i
 npm run dev
 
+// for the curious :
+// the drag and drop functionnality was made with these libraries :
+npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 
 

@@ -19,6 +19,10 @@ export function Navbar() {
 
         {/* Buttons */}
         <div className="flex items-center gap-3">
+          {/* show this button only if the user is admin */}
+          {isAdmin && (
+            <NavbarButton label="Logs" onClick={() => router.push("/Logs")} />
+          )}
           <NavbarButton label="Dashboard" onClick={() => router.push("/")} />
           <NavbarButton
             label="Bookmarks"
@@ -28,11 +32,6 @@ export function Navbar() {
             label="Settings"
             onClick={() => router.push("/Profile")}
           />
-
-          {/* show this button only if the user is admin */}
-          {isAdmin && (
-            <NavbarButton label="Logs" onClick={() => router.push("/Logs")} />
-          )}
 
           <NavbarButton
             label="Logout"
